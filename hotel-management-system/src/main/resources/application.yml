@@ -1,0 +1,147 @@
+spring:
+    application:
+        name: hotel-management-system
+
+    # Database Configuration
+    datasource:
+        url: jdbc:mysql://localhost:3306/hotel_management_system?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+        username: root
+        password: 1234
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        hikari:
+            maximum-pool-size: 10
+            minimum-idle: 5
+            idle-timeout: 300000
+            max-lifetime: 1800000
+            connection-test-query: SELECT 1
+
+    # JPA Configuration
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+                jdbc:
+                    time_zone: UTC
+                generate_statistics: false
+
+    # File Upload Configuration
+    servlet:
+        multipart:
+            max-file-size: 10MB
+            max-request-size: 10MB
+            enabled: true
+
+    web:
+        resources:
+            static-locations:
+                - classpath:/static/
+                - file:uploads/
+
+    # Email Configuration
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${EMAIL_USER:charukashehanrs@gmail.com}
+        password: ${EMAIL_PASS:zncibrfypyojjaxk}
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+                        required: true
+                    timeout: 5000
+                    connectiontimeout: 5000
+                    writetimeout: 5000
+
+    # OAuth2 Configuration
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
+                        client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
+                        scope: profile,email
+
+    # Task Execution
+    task:
+        execution:
+            pool:
+                core-size: 2
+                max-size: 10
+                queue-capacity: 100
+
+    # Cache Configuration
+    cache:
+        type: caffeine
+        caffeine:
+            spec: maximumSize=500,expireAfterWrite=600s
+
+    # Jackson Configuration
+    jackson:
+        serialization:
+            write-dates-as-timestamps: false
+            fail-on-empty-beans: false
+        deserialization:
+            fail-on-unknown-properties: false
+            accept-empty-string-as-null-object: true
+
+# JWT Configuration
+app:
+    jwt-secret: ${JWT_SECRET:JWTSuperSecretKeyForHotelManagementSystem2024SecureAndLongEnoughForProduction}
+    jwt-expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+    jwt-refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+
+# Server Configuration
+server:
+    port: 8080
+    error:
+        include-message: always
+        include-binding-errors: always
+        include-stacktrace: on_param
+        include-exception: false
+
+# Logging Configuration
+logging:
+    level:
+        edu.icet.hotel_management_system: INFO
+        org.springframework.security: WARN
+        org.springframework.web: WARN
+        org.hibernate.SQL: WARN
+        org.hibernate.type.descriptor.sql.BasicBinder: WARN
+        org.springframework.cache: INFO
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+        file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# API Documentation
+springdoc:
+    api-docs:
+        path: /api-docs
+    swagger-ui:
+        path: /swagger-ui.html
+        tags-sorter: alpha
+        operations-sorter: alpha
+        disable-swagger-default-url: true
+
+# File Upload Directory
+file:
+    upload-dir: ${FILE_UPLOAD_DIR:uploads}
+
+# CORS Configuration
+cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001}
+    allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+    allowed-headers: "*"
+    allow-credentials: true
+    max-age: 3600
+
+stripe:
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_your_stripe_secret_key}
+    public-key: ${STRIPE_PUBLIC_KEY:pk_test_your_stripe_public_key}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_your_webhook_secret}

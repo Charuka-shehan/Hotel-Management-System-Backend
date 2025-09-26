@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Email Verification</title>
+</head>
+<body>
+<h2>Welcome to Our Hotel Management System</h2>
+<p>Dear <span th:text="${name}">User</span>,</p>
+<p>Thank you for registering with us. Please click the link below to verify your email address:</p>
+<a th:href="${verificationUrl}">Verify Email</a>
+<p>If you did not create an account, please ignore this email.</p>
+<p>Best regards,<br>Hotel Management Team</p>
+</body>
+</html>
